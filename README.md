@@ -40,7 +40,9 @@ go run main.go all | jq '.' > example.json
 
 ### Get Word Frequencies
 ```bash
-go run main.go counts | jq '.' > example.json
+go run main.go counts everything | jq '.' > example.json
+go run main.go counts years | jq '.' > example.json
+go run main.go counts months | jq '.' > example.json
 ```
 
 

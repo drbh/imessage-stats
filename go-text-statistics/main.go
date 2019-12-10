@@ -170,37 +170,56 @@ func WordCount(s string) map[string]int {
 	return m
 }
 
-func getCountStrings() map[string]int {
-	// myStats := MessageStats{}
+func getCountStrings(period string) map[int]map[string]int {
 	allMsgs := imessagehooks.FetchFullDatabase("0")
 
 	count := 0
 	minTime := math.Inf(1)
 
 	var allText string
-	// var lastTm time.Time
-	// var lastFrom string
+	// var messageTimeMap map[int]string
+	messageTimeMapYear := make(map[int]string)
+	messageTimeMapMonth := make(map[int]string)
 
 	for _, v := range allMsgs {
+		tm := imessagehooks.AppleTimestampToTime(v.Date)
 		count++
 		s, err := strconv.ParseFloat(v.Date, 64)
 		if err != nil {
 		}
-		// tm := imessagehooks.AppleTimestampToTime(v.Date)
-		// if v.IsFromMe == "1" && lastFrom == "0" {
-		// 	lastFrom = "1"
-		// 	diff := tm.Sub(lastTm)
-		// 	lastTm = tm
-		// } else {
-		// 	lastFrom = "0"
-		// }
 		if s < minTime {
 			minTime = s
 		}
+		messageTimeMapYear[tm.Year()] = messageTimeMapYear[tm.Year()] + " " + v.Text
+		messageTimeMapMonth[int(tm.Month())] = messageTimeMapMonth[int(tm.Month())] + " " + v.Text
 		allText = allText + " " + v.Text
 	}
-	total := WordCount(allText)
-	return total
+
+	switch os := period; os {
+	case "everything":
+		resultAll := make(map[int]map[string]int)
+		resultAll[0] = WordCount(allText)
+		return resultAll
+
+	case "years":
+		resultsYear := make(map[int]map[string]int)
+		for k, v := range messageTimeMapYear {
+			resultsYear[k] = WordCount(v)
+		}
+		return resultsYear
+
+	case "months":
+		resultsMonth := make(map[int]map[string]int)
+		for k, v := range messageTimeMapMonth {
+			resultsMonth[k] = WordCount(v)
+		}
+		return resultsMonth
+
+	default:
+		resultAll := make(map[int]map[string]int)
+		resultAll[0] = WordCount(allText)
+		return resultAll
+	}
 
 }
 
@@ -327,8 +346,8 @@ func GetFullProfileStats(handle string) []byte {
 	// fmt.Println(len(js))
 }
 
-func GetStringCountsFullDatabase() []byte {
-	msf := getCountStrings()
+func GetStringCountsFullDatabase(period string) []byte {
+	msf := getCountStrings(period)
 
 	js, _ := json.Marshal(msf)
 

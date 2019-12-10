@@ -42,15 +42,22 @@ func main() {
 	}
 
 	if command == "counts" {
+		period := argsWithoutProg[1]
 
-		allstats := messagestats.GetStringCountsFullDatabase()
-		fmt.Println(string(allstats))
+		vaildPeriods := []string{"everything", "years", "months"}
+		if !contains(vaildPeriods, period) {
+			os.Exit(1)
+		}
+
+		counts := messagestats.GetStringCountsFullDatabase(period)
+		fmt.Println(string(counts))
+
 	}
 
 	if command == "number" {
 		number := argsWithoutProg[1]
-		allstats := messagestats.GetFullProfileStats(number)
-		fmt.Println(string(allstats))
+		numerstats := messagestats.GetFullProfileStats(number)
+		fmt.Println(string(numerstats))
 	}
 
 }
