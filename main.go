@@ -19,6 +19,18 @@ func main() {
 		os.Exit(0)
 	}
 
-	allstats := messagestats.GetFullProfileStats(number)
-	fmt.Println(string(allstats))
+	if number == "--all" {
+		allstats := messagestats.GetFullProfileStatsFullDatabase()
+		fmt.Println(string(allstats))
+	}
+
+	if number == "counts" {
+
+		allstats := messagestats.GetStringCountsFullDatabase()
+		fmt.Println(string(allstats))
+	} else {
+		allstats := messagestats.GetFullProfileStats(number)
+		fmt.Println(string(allstats))
+	}
+
 }

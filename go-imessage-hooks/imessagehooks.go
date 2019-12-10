@@ -131,6 +131,60 @@ func Fetch(handle string, latest string) []IMessageRow {
 
 }
 
+func FetchFullDatabase(latest string) []IMessageRow {
+	args := "?mode=ro&_mutex=no&_journal_mode=WAL&_query_only=1&_synchronous=2"
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+	connectionString := usr.HomeDir + "/Library/Messages/chat.db" + args
+	database, err := sql.Open("sqlite3", connectionString)
+	defer database.Close()
+	if err != nil {
+		log.Fatal("Connection Failed ", err)
+	}
+	defer database.Close()
+	database.SetMaxOpenConns(1)
+	rows, qerr := database.Query(`
+			 SELECT
+			    guid,
+			    id as handle,
+			    handle_id,
+			    text,
+			    date,
+			    date_read,
+			    is_from_me,
+				cache_roomnames,
+				is_read
+			FROM message
+			LEFT OUTER JOIN handle ON message.handle_id = handle.ROWID
+			WHERE date >= ` + latest + `
+        `)
+	defer rows.Close()
+	if qerr != nil {
+		log.Fatal("Query Failed ", qerr)
+	}
+
+	var allRows []IMessageRow
+
+	for rows.Next() {
+		var imrow IMessageRow
+		rows.Scan(&imrow.GUID,
+			&imrow.Handle,
+			&imrow.HandleID,
+			&imrow.Text,
+			&imrow.Date,
+			&imrow.DateRead,
+			&imrow.IsFromMe,
+			&imrow.CacheRoomnames,
+			&imrow.IsRead)
+
+		allRows = append(allRows, imrow)
+	}
+	return allRows
+
+}
+
 func poll(callback func(string)) {
 	args := "?mode=ro&_mutex=no&_journal_mode=WAL&_query_only=1&_synchronous=2"
 	usr, err := user.Current()
