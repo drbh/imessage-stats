@@ -63,6 +63,83 @@ go run main.go counts | jq '.' > example.json
 - Weekday By HourOfDay. 
 
 
+## Example Data
+
+### Get Profile Stats
+```JSON
+{
+  "Messages": [
+    {
+      "Year": 2018,
+      "Month": 8,
+      "Day": 12,
+      "Wkday": "Sunday",
+      "Hour": 20,
+      "Len": 12,
+      "Positve": 0,
+      "Timestamp": "555813885000000000"
+    },
+  ],
+  "EmojiMap": {
+    "“": 1,
+    "”": 1,
+    "❤": 5,
+    "🌲": 1,
+    "🎄": 1,
+    "👍": 1,
+    "💕": 3,
+    "😂": 1,
+    "😉": 1,
+    "😊": 5,
+    "😘": 15,
+    "🙏": 3,
+    "🤗": 1,
+    "🤣": 1
+  },
+  "WkHr": {
+    "Friday_0": 0,
+    "Friday_1": 0,
+    "Friday_10": 0,
+    "Friday_11": 0,
+  },
+  "SentimentScore": 1,
+  "MessageCount": 75,
+  "FirstSeen": "2000-12-31T19:00:00-05:00",
+  "AverageResponseSeconds": 1649333,
+  "ResponseTimes": [
+    {
+      "IsentTime": "2018-09-20T10:33:41-04:00",
+      "TheyRespondTime": "2018-08-12T20:44:57-04:00",
+      "Diff": 3332924000000000
+    },
+  ]
+}
+```
+
+### Get Word Frequencies
+
+```JSON
+{
+  "!": 14,
+  "!!": 9,
+  "!!!": 13,
+  "!!!!": 3,
+  "!!!!!": 7,
+  "!!!!!!": 1,
+  "!!!!!!!": 3,
+  "!!!!!!!!!!!!!!!!!!!!": 1,
+  "!!!!!!!!!!!!!!!!!!!!!!!!!!": 1,
+  "!!***": 1,
+  "!**": 2,
+  "!***": 1,
+  "!=": 3,
+  "!?": 1,
+  "!countdown": 1,
+  "\"": 7,
+}
+```
+
+
 ### Gotchas
 
 If a number is in more then one chat, like a direct message and a group chat; there chat stats will not seperate those conversation from the statistics (so if the dates look like they dont match up - find the group chat!)
