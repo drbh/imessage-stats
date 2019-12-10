@@ -11,6 +11,13 @@ go get golang.org/x/sync/syncmap
 
 also i'd suggest installing `jq` so you can manage the large JSON repsonses in the Terminal. `| jq '.' >` sends the program output to a file, while pretty printing the data.
 
+#### Apple Security Settings Setup
+```bash
+open -b com.apple.systempreferences /System/Library/PreferencePanes/Security.prefPane
+```
+
+Now you'll want to allow Terminal to have `Full Disk Access` this is needed to read the Message db from the Terminal. 
+
 
 # Get Some Stats
 
@@ -58,5 +65,5 @@ go run main.go counts | jq '.' > example.json
 
 ### Gotchas
 
-If a number is in more then one chat, like a direct message and a group chat; there chat stats will not seperate those converatsion from the statistics (so if the dates look like they dont match up - find the group chat!)
+If a number is in more then one chat, like a direct message and a group chat; there chat stats will not seperate those conversation from the statistics (so if the dates look like they dont match up - find the group chat!)
 
