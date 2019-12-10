@@ -18,19 +18,23 @@ open -b com.apple.systempreferences /System/Library/PreferencePanes/Security.pre
 
 Now you'll want to allow Terminal to have `Full Disk Access` this is needed to read the Message db from the Terminal. 
 
-
 # Get Some Stats
+
+### Command List
+- number [phone number]
+- all 
+- counts
 
 ## Per Number
 ### Get Profile Stats
 ```bash
-go run main.go +12223334444 | jq '.' > example.json
+go run main.go number +12223334444 | jq '.' > example.json
 ```
 
 ## Per Database
 ### Get Profile Stats
 ```bash
-go run main.go --all | jq '.' > example.json
+go run main.go all | jq '.' > example.json
 ```
 
 
